@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}商品首页{% endblock %}
+
+{% block headerjs %}
+    <style>
+        .RedA{
+            color: red;
+            font-size: 28px;
+            }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="classes">
+        <ul class="classes-items">
+            {% for category in category_list %}
+                <li class="items {% if category.id == currentCid %}active{% endif %} "><a href="/category/{{ category.id }}">{{category.cname}}</a></li>
+            {% endfor %}
+
+
+        </ul>
+    </div>
+<div class="goods-model">
+        <div class="goods-content">
+            {% for good in good_list %}
+                    <div class="good">
+                        <a href="/goodsdetails/{{good.id}}">
+                            <img src="{{good.getImgUrl}}" width="285px" height="285px">
+                            <p class="name">{{ good.gname }}</p>
+                            <div class="price">
+                                <i>￥</i>
+                                <p class="big">{{ good.price }}</p>
+                                <s>{{ good.oldprice}}</s>
+                            </div>
+                            <div class="sale">
+                                特卖
+                            </div>
+                        </a>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+<div id="pager" style="text-align: center; font-size: 16px; overflow: hidden; margin-top: 10px;">
+    {% if good_list.has_previous %}
+            <a href="/category/{{ currentCid }}/page/{{good_list.previous_page_number}}" style="display: inline-block; padding: 5px; margin: 5px;">上一页</a>
+    {% endif %}
+    {% for page in page_list %}
+            <a href="/category/{{ currentCid }}/page/{{page}}" {% if page == good_list.number %}class="RedA"{% endif %} style="display: inline-block; padding: 5px; margin: 5px;">{{page}}</a>
+    {% endfor %}
+    {% if good_list.has_next %}
+            <a href="/category/{{ currentCid }}/page/{{good_list.next_page_number}}" style="display: inline-block; padding: 5px; margin: 5px;">下一页</a>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block footerjs %}
+     <script>
+        $('#pager').css({'text-align':'center','font-size':'16px','overflow':'hidden','margin-top':'10px'})
+        $('#pager a').css({'display':'inline-block','padding':'5px','margin':'5px'})
+    </script>
+
+{% endblock %}
